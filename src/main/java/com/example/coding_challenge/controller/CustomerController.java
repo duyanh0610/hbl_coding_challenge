@@ -3,13 +3,15 @@ package com.example.coding_challenge.controller;
 import com.example.coding_challenge.entity.dto.CustomerDTO;
 import com.example.coding_challenge.entity.request.CustomerRequest;
 import com.example.coding_challenge.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController(value = "/api/v1/customers")
+@RestController
+@RequestMapping(value = "/api/v1/customers")
 @AllArgsConstructor
 public class CustomerController {
 
@@ -26,12 +28,12 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerRequest request) {
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerRequest request) {
         return ResponseEntity.status(201).body(customerService.createCustomer(request));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CustomerDTO> update(@PathVariable String id, @RequestBody CustomerRequest request) {
+    public ResponseEntity<CustomerDTO> update(@PathVariable String id, @RequestBody @Valid CustomerRequest request) throws Exception {
         return ResponseEntity.status(200).body(customerService.updateCustomer(id, request));
     }
 

@@ -14,7 +14,7 @@ public interface CustomerService {
 
     CustomerDTO createCustomer(CustomerRequest request);
 
-    CustomerDTO updateCustomer(String id, CustomerRequest request);
+    CustomerDTO updateCustomer(String id, CustomerRequest request) throws Exception;
 
     void deleteCustomer(String id) throws Exception;
 

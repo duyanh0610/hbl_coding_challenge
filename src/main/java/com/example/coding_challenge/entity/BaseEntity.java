@@ -2,6 +2,8 @@ package com.example.coding_challenge.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,9 +16,11 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "id", nullable = false)
     private String id;
 
+    @CreationTimestamp
     @Column(name = "createTime")
     private LocalDateTime createdTime;
 
+    @UpdateTimestamp
     @Column(name = "updatedTime")
     private LocalDateTime updatedTime;
 

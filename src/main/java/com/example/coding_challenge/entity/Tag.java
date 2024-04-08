@@ -12,9 +12,9 @@ import java.util.List;
 @Table(name = "tag")
 @Data
 public class Tag extends BaseEntity {
-    @Column()
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToMany( mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags")
     private List<Customer> customers;
 }

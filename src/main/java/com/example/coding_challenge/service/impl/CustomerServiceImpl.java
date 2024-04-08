@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,17 +24,16 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> getAll() {
         List<Customer> customers = customerRepository.findAll();
         return customers.stream()
-                .map(customer -> modelMapper.map(customer, CustomerDTO.class))
-                .collect(Collectors.toList());
+            .filter(customer -> !customer.isDelete())
+            .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+            .collect(Collectors.toList());
     }
 
     @Override
     public CustomerDTO getCustomer(String id) throws Exception {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (!customer.isPresent()) {
-            throw new Exception("Customer not found");
-        }
-        return modelMapper.map(customer.get(), CustomerDTO.class);
+        Customer customer = customerRepository.findById(id)
+            .orElseThrow(() -> new Exception("Customer not found"));
+        return modelMapper.map(customer, CustomerDTO.class);
     }
 
     @Override
@@ -46,17 +44,22 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO updateCustomer(String id, CustomerRequest request) {
-        return null;
+    public CustomerDTO updateCustomer(String id, CustomerRequest request) throws Exception {
+        Customer customer = customerRepository.findById(id)
+            .orElseThrow(() -> new Exception("Customer not found"));
+        customer.setName(request.getName());
+        customer.setTags(request.getTags());
+
+        customerRepository.save(customer);
+        return modelMapper.map(customer, CustomerDTO.class);
     }
 
     @Override
     public void deleteCustomer(String id) throws Exception {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (!customer.isPresent()) {
-            throw new Exception("Customer not found");
-        }
-        customerRepository.delete(customer.get());
+        Customer customer = customerRepository.findById(id)
+            .orElseThrow(() -> new Exception("Customer not found"));
+        customer.setDelete(true);
+        customerRepository.save(customer);
     }
 
     @Override
