@@ -3,7 +3,7 @@ package com.example.coding_challenge.service.impl;
 import com.example.coding_challenge.entity.Customer;
 import com.example.coding_challenge.entity.Tag;
 import com.example.coding_challenge.entity.dto.CustomerDTO;
-import com.example.coding_challenge.entity.request.UserRequest;
+import com.example.coding_challenge.entity.request.CustomerRequest;
 import com.example.coding_challenge.repository.CustomerRepository;
 import com.example.coding_challenge.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -30,20 +30,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> getCustomer(String id) throws Exception {
+    public CustomerDTO getCustomer(String id) throws Exception {
         Optional<Customer> customer = customerRepository.findById(id);
-        return customer;
+        if (!customer.isPresent()) {
+            throw new Exception("Customer not found");
+        }
+        return modelMapper.map(customer.get(), CustomerDTO.class);
     }
 
     @Override
-    public CustomerDTO createCustomer(UserRequest request) {
+    public CustomerDTO createCustomer(CustomerRequest request) {
         Customer customer = modelMapper.map(request, Customer.class);
         customerRepository.save(customer);
         return modelMapper.map(customer, CustomerDTO.class);
     }
 
     @Override
-    public CustomerDTO updateCustomer(String id, UserRequest request) {
+    public CustomerDTO updateCustomer(String id, CustomerRequest request) {
         return null;
     }
 

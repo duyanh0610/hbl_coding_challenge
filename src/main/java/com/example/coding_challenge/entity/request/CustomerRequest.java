@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserRequest {
+public class CustomerRequest {
     private String name;
     private List<Tag> tags;
 }

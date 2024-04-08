@@ -3,19 +3,18 @@ package com.example.coding_challenge.service;
 import com.example.coding_challenge.entity.Customer;
 import com.example.coding_challenge.entity.Tag;
 import com.example.coding_challenge.entity.dto.CustomerDTO;
-import com.example.coding_challenge.entity.request.UserRequest;
+import com.example.coding_challenge.entity.request.CustomerRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CustomerService {
     List<CustomerDTO> getAll();
 
-    Optional<Customer> getCustomer(String id) throws Exception;
+    CustomerDTO getCustomer(String id) throws Exception;
 
-    CustomerDTO createCustomer(UserRequest request);
+    CustomerDTO createCustomer(CustomerRequest request);
 
-    CustomerDTO updateCustomer(String id, UserRequest request);
+    CustomerDTO updateCustomer(String id, CustomerRequest request);
 
     void deleteCustomer(String id) throws Exception;
 
